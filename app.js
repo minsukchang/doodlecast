@@ -4,7 +4,7 @@ var http = require('http').createServer(handler);
 var url = require('url');
 var path = require('path');
 var fs = require('fs');
-var sio = require('socket.io').listen(srv);
+var sio = require('socket.io').listen(http);
 var port = 80;
 
 http.listen(port);
