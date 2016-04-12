@@ -1,13 +1,13 @@
 // shared canvas using socket.io
 
-var srv = require('http').createServer(handler);
+var http = require('http').createServer(handler);
 var url = require('url');
 var path = require('path');
 var fs = require('fs');
 var sio = require('socket.io').listen(srv);
-var port = 8080;
+var port = 80;
 
-srv.listen(port);
+http.listen(port);
 
 function handler(request, response) {
   var uri = url.parse(request.url).pathname;
