@@ -1,10 +1,12 @@
 {
   "name": "doodlecast",
-  "version": "0.1.0",
-  "description": "This minimal Node.JS app allows multiple users to draw simultaneously on a shared canvas element using Socket.IO.",
+  "version": "0.2.0",
+  "description": "Allows multiple users to interact simultaneously over a shared canvas element.",
   "main": "app.js",
   "dependencies": {
-    "socket.io": "^1.4.5"
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5",
+    "ejs": "^2.4.1"
   },
   "devDependencies": {},
   "scripts": {

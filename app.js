@@ -1,51 +1,25 @@
 // shared canvas using socket.io
-
-var http = require('http').createServer(handler);
-var url = require('url');
+var args = process.argv.slice(2);
 var path = require('path');
-var fs = require('fs');
-var sio = require('socket.io').listen(http);
-var port = 8080;
+
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var sio = require('socket.io')(http);
+
+var port = args[0];
+
+app.use("/public", express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'ejs');
+
+app.get('/', function(req, res) {
+  res.render('index');
+});
 
 http.listen(port);
 
-function handler(request, response) {
-  var uri = url.parse(request.url).pathname;
-  var filename = 'public' + uri;
-
-  fs.exists(filename, function(exists) {
-      //Incase the filename could not be found
-      if(!exists) {
-        response.writeHead(404, {"Content-Type": "text/plain"});
-        response.write("404 Not Found\n");
-        response.end();
-        return;
-      }
-
-      //Incase the filename is a directory, append /index.html
-      if (fs.statSync(filename).isDirectory())
-        filename += '/index.html';
-
-      //Write the file contents to response
-      fs.readFile(filename, "binary", function(err, file) {
-        //Error reading file
-        if(err) {
-          response.writeHead(500, {"Content-Type": "text/plain"});
-          response.write(err + "\n");
-          response.end();
-          return;
-        }
-
-        response.writeHead(200);
-        response.write(file, "binary");
-        response.end();
-      });
-    });
-}
-
 sio.sockets.on('connection', function(socket){
   console.log('user connected to socket')
-
   socket.on('user-draw', function(msg) {
     socket.broadcast.emit('server-draw', msg);
   });

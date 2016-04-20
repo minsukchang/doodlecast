@@ -1,6 +1,6 @@
 $(function() {
   //Client side script for DoodleCast
-  var server = 'http://198.96.36.24:12000';
+  var server = window.location.href;
   var socket = io(server);
 
   var doc = $(document);
@@ -13,7 +13,7 @@ $(function() {
 
   var clients = {};
 
-  canvas.on('mousedown touchstart', function(e) {
+  canvas.bind('mousedown touchstart', function(e) {
     e.preventDefault();
 
     prev.x = ( (e.type == 'touchstart') ? ( parseInt(e.originalEvent.touches[0].pageX)) : (e.pageX) ) - canvas.offset().left;
@@ -26,10 +26,9 @@ $(function() {
     e.preventDefault();
 
     if(drawing) {
-
       cur_x = ( (e.type == 'touchmove') ? ( parseInt(e.originalEvent.touches[0].pageX)) : (e.pageX) ) - canvas.offset().left;
-      cur_y= ( (e.type == 'touchmove') ? ( parseInt(e.originalEvent.touches[0].pageY)) : (e.pageY) ) - canvas.offset().top;
-      
+      cur_y = ( (e.type == 'touchmove') ? ( parseInt(e.originalEvent.touches[0].pageY)) : (e.pageY) ) - canvas.offset().top;
+
       drawLine(prev.x, prev.y, cur_x, cur_y, 5, 0, 0, 0, 1);
 
       socket.emit('user-draw', {
