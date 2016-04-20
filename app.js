@@ -13,8 +13,6 @@ function handler(request, response) {
   var uri = url.parse(request.url).pathname;
   var filename = 'public' + uri;
 
-  console.log('file "' + filename + '" was requested.');
-
   fs.exists(filename, function(exists) {
       //Incase the filename could not be found
       if(!exists) {
@@ -49,7 +47,6 @@ sio.sockets.on('connection', function(socket){
   console.log('user connected to socket')
 
   socket.on('user-draw', function(msg) {
-    console.log('user-draw event');
     socket.broadcast.emit('server-draw', msg);
   });
 });
